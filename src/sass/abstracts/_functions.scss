@@ -1,0 +1,6 @@
+@function grid-width( $mergedCols:1, $totalCols:12, $gutter-horizontal: 3rem ) {
+  $g: $gutter-horizontal;
+  $gNum: -1 + $totalCols;
+  $gInColNum: -1 + $mergedCols;
+  @return calc(#{$mergedCols} * ((100% - #{$gNum} * #{$g}) / #{$totalCols}) + #{$gInColNum} * #{$g});
+}

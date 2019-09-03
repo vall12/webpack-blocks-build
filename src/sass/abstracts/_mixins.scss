@@ -1,0 +1,150 @@
+// BASE
+@mixin clearfix {
+  &::after {
+    /* clearfix ->*/
+    content: "";
+    display: table;
+    clear: both;
+    /* <- clearfix  */
+  }
+}
+
+@mixin absCenter {
+  /* -> absolute centering*/
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* <- */
+}
+
+
+@mixin absParentHeight() {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+
+@mixin firstInTypes() {
+  $sel: &;
+  @at-root :not(#{&}) + #{&} {
+    /* first in raw with selector: #{$sel}}*/
+    // elements without need selector  + (next element with need selector)
+    @content;
+  }
+}
+
+
+// MEDIA QUERY MANAGER
+/*
+0   - 300px;    min
+300 - 600px:    Phone
+600 - 900px:    Tablet portrait
+900 - 1200px:   Tablet landscape
+[1200 - 1800]   is where our normal styles apply
+1800px + :      Big desktop
+
+$breakpoint arguement choices:
+- min
+- phone
+- tab-port
+- tab-land
+- big-desktop
+
+
+ORDER: Base + typography > general layout + grid > page layout > components
+
+1em = 16px
+*/
+@mixin respond($breakpoint) {
+
+  @if $breakpoint == min {
+    @media only screen and (max-width: 18.75em) {
+      @content
+    }; //300px
+  }
+
+  @if $breakpoint == phone {
+    @media only screen and (max-width: 37.5em) {
+      @content
+    }; //600px
+  }
+  @if $breakpoint == tab-port {
+    @media only screen and (max-width: 56.25em) {
+      @content
+    }; //900px
+  }
+  @if $breakpoint == tab-land {
+    @media only screen and (max-width: 75em) {
+      @content
+    }; //1200px
+  }
+  @if $breakpoint == big-desktop {
+    @media only screen and (min-width: 112.5em) {
+      @content
+    }; //1800
+  }
+}
+
+
+@mixin responds($property, $big:false, $normal:false, $tab_land:false, $tab_port:false, $phone:false, $min:false ) {
+
+  @if $big!=false {
+    @include respond(big-desktop) {
+      #{$property}: $big;
+    }
+  }
+
+  @if $normal!=false {
+    #{$property}: $normal;
+  }
+
+  @if $tab_land!=false {
+    @include respond(tab-land) {
+      #{$property}: $tab_land;
+    }
+  }
+
+  @if $tab_port!=false {
+    @include respond(tab-port) {
+      #{$property}: $tab_port;
+    }
+  }
+
+  @if $phone!=false {
+    @include respond(phone) {
+      #{$property}: $phone;
+    }
+  }
+
+  @if $min!=false {
+    @include respond(min) {
+      #{$property}: $min;
+    }
+  }
+}
+
+// set width of grid coloumn
+@mixin grid-col-width($mergedCols:1, $totalCols:12, $gutter-horizontal:3rem) {
+  width: grid-width($mergedCols, $totalCols, $gutter-horizontal);
+}
+
+// set width and gutter for grid column
+@mixin grid-cols($mergedCols:1, $totalCols:12, $gutter-horizontal:3rem) {
+
+  float: left;
+  &:not(:last-child) {
+    margin-right: $gutter-horizontal;
+    @include respond(tab-port) {
+      margin-right: 0;
+    }
+  }
+  width: grid-width($mergedCols, $totalCols, $gutter-horizontal);
+
+  //@include respond(tab-port) {
+  //  //width: 100% !important;
+  //  width: 100% !important;
+  //}
+}
+
