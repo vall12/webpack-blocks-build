@@ -57,13 +57,13 @@ const config = createConfig([
 
     /** CSS/SCSS autoprefixer cssnano if production environment  */
     match([/\.(sa|sc|c)ss$/, '!*node_modules*'], [
-        cacheLoader(),
         sassify({}, {}, {}, {
             plugins: [
                 autoprefixer({overrideBrowserslist: ['defaults', '> 1%', 'last 4 versions']}),
                 env("production", [cssnano()]),
             ],
-        })
+        }),
+        cacheLoader(),
     ]),
 
     /** FONTS */  // will copy font files to build directory and link to them
