@@ -31,12 +31,12 @@ function sassify(miniCssPluginOptions = {}, miniCssLoaderOptions = {}, cssLoader
             env("production", [cssnano()]),
         ],
         /* Other PostCSS options */
-    }, postCssOptions)
+    }, postCssOptions);
 
 
-    return function (context, {addLoader, addPlugin}) {
+    return function (context, {addLoader}) {
         return function (prevConfig) {
-            prevConfig = Object.assign({}, prevConfig, {plugins: prevConfig.plugins.concat([new MiniCssExtractPlugin(miniCssPluginOptions)])})
+            prevConfig = Object.assign({}, prevConfig, {plugins: prevConfig.plugins.concat([new MiniCssExtractPlugin(miniCssPluginOptions)])});
             return addLoader(Object.assign(
                 {
                     test: /\.css$/,

@@ -30,6 +30,7 @@ const phpServer = require('./src/Lib/custom_webpack_blocks/phpServer');
 const sassify = require('./src/Lib/custom_webpack_blocks/sassify');
 const splitChunks = require('./src/Lib/custom_webpack_blocks/splitChunks');
 const jsTerserMinify = require('./src/Lib/custom_webpack_blocks/jsTerserMinify');
+const cacheLoader = require('./src/Lib/custom_webpack_blocks/cacheLoader');
 
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
@@ -56,6 +57,7 @@ const config = createConfig([
 
     /** CSS/SCSS autoprefixer cssnano if production environment  */
     match([/\.(sa|sc|c)ss$/, '!*node_modules*'], [
+        cacheLoader(),
         sassify({}, {}, {}, {
             plugins: [
                 autoprefixer({overrideBrowserslist: ['defaults', '> 1%', 'last 4 versions']}),
@@ -83,6 +85,7 @@ const config = createConfig([
     match(['*.js', '!*node_modules*'], [
         babel(/* options */),
         jsTerserMinify( /* options */),
+        cacheLoader(),
     ]),
 
     /** IMAGES INJECTS UP TO LIMIT OR COPIES */ // will load images up to 10KB as data URL
